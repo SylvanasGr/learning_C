@@ -3,7 +3,7 @@
 
 int staticArray() {
 
-    int listA[defSize] = {1,2,3,4,5,6};
+    int listA[d] = {1,2,3,4,5,6};
     int sizeOfArray = sizeOfArray(listA);
     printf("sum list: %d\n", sumOfArray(listA,sizeOfArray));
     doubleEveryElement(listA,sizeOfArray);
