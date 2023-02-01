@@ -13,34 +13,35 @@ void LinkedList() {
     addElement(&header, 500);
     addElement(&header, 800);
     addElement(&header, 1500);
-    printf("success\n");
 //    printAllElements(&header);
-//    removeAllElements(&header);
-    printAllElements(&header);
-//    printf("%d\n",searchElement(&header,500));
+//    sortElements(&header);
+//    printAllElements(&header);
     sortElements(&header);
-    printAllElements(&header);
-//    printf("%d\n",searchElement(&header,500));
-    removeAllElements(&header);
-    printf("after free\n");
-    printAllElements(&header);
+
 }
 
+
 void printAllElements(_Node *header) {
-    if(header == NULL){
+    _Node* temp = header;
+    if(temp == NULL){
         printf("Empty list!");
     }
-    while (header != NULL) {
-        printf("%d\n", header->value);
-        header = (_Node *) header->next;
+    while (temp != NULL) {
+        printf("%d\n", temp->value);
+        temp = (_Node *) temp->next;
     }
 }
 
 void addElement(_Node *previous, int new_value) {
+    _Node* temp = previous;
+    if(temp->value == NULL){
+        temp->value = new_value;
+        return;
+    }
     _Node* n1 = malloc(sizeof *n1);
     n1->value = new_value;
-    n1->next = previous->next;
-    previous->next = (_Node *) n1;
+    n1->next = temp->next;
+    temp->next = (_Node *) n1;
 }
 
 void removeAllElements(_Node *header){
@@ -52,7 +53,7 @@ void removeAllElements(_Node *header){
     //todo: free()
 }
 
-int searchElement(_Node* header,int value){
+int searchElement(_Node* header,int value){\
     _Node* current = header;
     int counter =0;
     while (header != NULL){
