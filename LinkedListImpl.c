@@ -8,56 +8,60 @@ typedef struct Node {
 
 
 void LinkedList() {
-    _Node header = {};
-    addElement(&header, 100);
-    addElement(&header, 500);
-    addElement(&header, 800);
-    addElement(&header, 1500);
-//    printAllElements(&header);
-//    sortElements(&header);
-//    printAllElements(&header);
-    sortElements(&header);
+    _Node *head = NULL;
+    add(&head, 100);
+    add(&head, 500);
+    add(&head, 800);
+    add(&head, 1500);
+    printAllElements(head);
+    deleteNode(&head,800);
+    printAllElements(head);
+    printf("searchElement for value 500: %d\n", searchElement(head, 500));
+////    sortElements(&head);
+////    printAllElements(&head);
+////    sortElements(head);
+////    printAllElements(head);
+    printf("size of the LinkedList: %d\n", getSize(head));
 
 }
 
 
-void printAllElements(_Node *header) {
-    _Node* temp = header;
-    if(temp == NULL){
-        printf("Empty list!");
+void printAllElements(_Node *head) {
+    _Node *temp = head;
+    if (temp == NULL) {
+        printf("Empty list!\n");
     }
+    printf("--------------\n");
+    int p = 0;
     while (temp != NULL) {
-        printf("%d\n", temp->value);
+        printf(".%d) %d\n", p++, temp->value);
         temp = (_Node *) temp->next;
     }
+    printf("--------------\n");
 }
 
-void addElement(_Node *previous, int new_value) {
-    _Node* temp = previous;
-    if(temp->value == NULL){
-        temp->value = new_value;
-        return;
-    }
-    _Node* n1 = malloc(sizeof *n1);
-    n1->value = new_value;
-    n1->next = temp->next;
-    temp->next = (_Node *) n1;
+void add(struct Node **head, int new_value) {
+    _Node *newNode = malloc(sizeof(_Node));
+    newNode->value = new_value;
+    newNode->next = *head;
+    *head = newNode;
 }
 
-void removeAllElements(_Node *header){
-    _Node* current = header;
-    while (header != NULL){
-        header = header->next;
+void removeAllElements(_Node *head) {
+    _Node *current = head;
+    while (head != NULL) {
+        head = head->next;
     }
     free(current);
     //todo: free()
 }
 
-int searchElement(_Node* header,int value){\
-    _Node* current = header;
-    int counter =0;
-    while (header != NULL){
-        if(current->value == value){
+int searchElement(_Node *head, int value) {
+    \
+    _Node *current = head;
+    int counter = 0;
+    while (head != NULL) {
+        if (current->value == value) {
             return counter;
         }
         current = (_Node *) current->next;
@@ -66,21 +70,21 @@ int searchElement(_Node* header,int value){\
     return -1;
 }
 
-void sortElements(_Node* header){
-    int swapped,i;
-    _Node* node1, *node2 = NULL;
+void sortElements(_Node *head) {
+    int swapped, i;
+    _Node *node1, *node2 = NULL;
 
-    if(header == NULL){
+    if (head == NULL) {
         return;
     }
 
     do {
         swapped = 0;
-        node1= header;
+        node1 = head;
 
-        while (node1->next != node2){
-            if(node1->value > node1->next->value){
-                swap(node1,node1->next);
+        while (node1->next != node2) {
+            if (node1->value > node1->next->value) {
+                swap(node1, node1->next);
                 swapped = 1;
             }
             node1 = node1->next;
@@ -89,8 +93,39 @@ void sortElements(_Node* header){
     } while (swapped);
 }
 
-void swap (_Node* node1,_Node* node2){
+void swap(_Node *node1, _Node *node2) {
     int temp = node1->value;
     node1->value = node2->value;
     node2->value = temp;
+}
+
+int getSize(_Node *head) {
+    int count = 0;
+    _Node *temp = head;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+
+void deleteNode(_Node **head, int key) {
+    _Node *temp = *head, *prev;
+
+    if (temp != NULL && temp->value == key) {
+        *head = temp->next;
+        free(temp);
+        return;
+    }
+
+    while (temp != NULL && temp->value != key) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL) return;
+
+    prev->next = temp->next;
+
+    free(temp);
 }
